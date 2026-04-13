@@ -62,9 +62,9 @@ void ATankPlayer::BeginPlay()
 	PlayerController = Cast<ATHPlayerController>(GetController());
 }
 
-void ATankPlayer::Fire()
+void ATankPlayer::FireNormal()
 {
-	if (!ProjectileClass) return;
+	if (!NormalProjectileClass) return;
 
 	FVector SpawnLocation = Mesh->GetSocketLocation(TEXT("Muzzle"));
 	FRotator SpawnRotation = Mesh->GetSocketRotation(TEXT("Muzzle"));
@@ -74,10 +74,59 @@ void ATankPlayer::Fire()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
 	SpawnParams.Instigator = GetInstigator();
-	GetWorld()->SpawnActor<ATHProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, SpawnParams);
+	GetWorld()->SpawnActor<ATHProjectile>(NormalProjectileClass, SpawnLocation, SpawnRotation, SpawnParams);
 
 	if (FireSound)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+	}
+}
+
+void ATankPlayer::FireDouble()
+{
+	if (!NormalProjectileClass) return;
+
+	FVector LeftSpawnLocation = Mesh->GetSocketLocation(TEXT("Muzzle_L"));
+	FVector RightSpawnLocation = Mesh->GetSocketLocation(TEXT("Muzzle_R"));
+	FRotator SpawnRotation = Mesh->GetSocketRotation(TEXT("Muzzle"));
+	SpawnRotation.Pitch = 0.f;
+	SpawnRotation.Roll = 0.f;
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.Instigator = GetInstigator();
+	GetWorld()->SpawnActor<ATHProjectile>(NormalProjectileClass, LeftSpawnLocation, SpawnRotation, SpawnParams);
+	GetWorld()->SpawnActor<ATHProjectile>(NormalProjectileClass, RightSpawnLocation, SpawnRotation, SpawnParams);
+
+	if (FireSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+	}
+}
+
+void ATankPlayer::FireLaser()
+{
+}
+
+void ATankPlayer::FireSonic()
+{
+}
+
+void ATankPlayer::Fire()
+{
+	switch (CurrentWeaponType)
+	{
+	case EWeaponType::Normal:
+		FireNormal();
+		break;
+	case EWeaponType::Double:
+		FireDouble();
+		break;
+	case EWeaponType::Laser:
+		FireLaser();
+		break;
+	case EWeaponType::Sonic:
+		FireSonic();
+		break;
 	}
 }

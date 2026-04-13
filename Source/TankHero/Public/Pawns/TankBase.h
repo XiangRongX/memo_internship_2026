@@ -33,8 +33,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<UFloatingPawnMovement> MovementComponent;
 
-	UPROPERTY(EditDefaultsOnly, Category = "TH|Attack")
-	TSubclassOf<ATHProjectile> ProjectileClass;
+	UPROPERTY(EditAnywhere, Category = "TH|Weapon")
+	TSubclassOf<ATHProjectile> NormalProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "TH|Weapon")
+	TSubclassOf<ATHProjectile> SonicProjectileClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Sounds")
 	TObjectPtr<USoundBase> FireSound;
