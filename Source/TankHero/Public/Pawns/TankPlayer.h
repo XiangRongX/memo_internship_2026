@@ -21,6 +21,8 @@ public:
 	ATankPlayer();
 	virtual void Tick(float DeltaTime) override;
 
+	void Fire();
+
 	void UpdateChassisTargetVector(FVector MoveVector) { TargetChassisVector = MoveVector; }
 	void UpdateTurretTarget(FVector MouseLocation) { TargetTurretLocation = MouseLocation; }
 	FRotator GetTurretRelativeRotation() const { return TurretRelativeRotation; }
@@ -28,22 +30,22 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "FH|Movement")
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Movement")
 	float ChassisRotateSpeed = 10.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "FH|Movement")
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Movement")
 	float TurretRotateSpeed = 15.f;
 
-	UPROPERTY(VisibleAnywhere, Category = "FH|Components")
+	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<USpringArmComponent> SpringArm;
 
-	UPROPERTY(VisibleAnywhere, Category = "FH|Components")
+	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<UCameraComponent> Camera;
 
-	UPROPERTY(VisibleAnywhere, Category = "FH|Components")
+	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<USkeletalMeshComponent> LeftWheel;
 
-	UPROPERTY(VisibleAnywhere, Category = "FH|Components")
+	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<USkeletalMeshComponent> RightWheel;
 
 private:

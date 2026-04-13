@@ -25,6 +25,7 @@ void ATHPlayerController::SetupInputComponent()
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATHPlayerController::Move);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &ATHPlayerController::OnLeftClick);
 	}
 }
 
@@ -65,4 +66,11 @@ void ATHPlayerController::Move(const FInputActionValue& Value)
 		Player->AddMovementInput(CurrentMoveInput, 1.0f);
 	}
 
+}
+
+void ATHPlayerController::OnLeftClick()
+{
+	if (!Player.IsValid()) return;
+
+	Player->Fire();
 }

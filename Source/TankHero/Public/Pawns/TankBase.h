@@ -10,6 +10,7 @@ class USphereComponent;
 class UCapsuleComponent;
 class ATHPlayerController;
 class UFloatingPawnMovement;
+class ATHProjectile;
 
 UCLASS()
 class TANKHERO_API ATankBase : public APawn
@@ -23,14 +24,20 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	UPROPERTY(VisibleAnywhere, Category = "FH|Components")
+	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<USkeletalMeshComponent> Mesh;
 
-	UPROPERTY(VisibleAnywhere, Category = "FH|Components")
+	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<UCapsuleComponent> Capsule;
 
-	UPROPERTY(VisibleAnywhere, Category = "FH|Components")
+	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<UFloatingPawnMovement> MovementComponent;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Attack")
+	TSubclassOf<ATHProjectile> ProjectileClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Sounds")
+	TObjectPtr<USoundBase> FireSound;
 
 private:
 	

@@ -6,6 +6,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Player/THPlayerController.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Actors/THProjectile.h"
+#include "Kismet/GameplayStatics.h"
 
 ATankPlayer::ATankPlayer()
 {
@@ -58,4 +60,24 @@ void ATankPlayer::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerController = Cast<ATHPlayerController>(GetController());
+}
+
+void ATankPlayer::Fire()
+{
+	if (!ProjectileClass) return;
+
+	FVector SpawnLocation = Mesh->GetSocketLocation(TEXT("Muzzle"));
+	FRotator SpawnRotation = Mesh->GetSocketRotation(TEXT("Muzzle"));
+	SpawnRotation.Pitch = 0.f;
+	SpawnRotation.Roll = 0.f;
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this;
+	SpawnParams.Instigator = GetInstigator();
+	GetWorld()->SpawnActor<ATHProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, SpawnParams);
+
+	if (FireSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+	}
 }

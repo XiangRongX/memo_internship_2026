@@ -34,7 +34,11 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TH|Input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "TH|Input")
+	TObjectPtr<UInputAction> FireAction;
+
 	void Move(const FInputActionValue& Value);
+	void OnLeftClick();
 
 private:
 	TWeakObjectPtr<ATankPlayer> Player;
