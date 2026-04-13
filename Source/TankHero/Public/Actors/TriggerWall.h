@@ -35,10 +35,12 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "TH|TriggerWall")
 	void ResetWall();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool bIsLowered = false;
+
 private:	
 	FVector OriginalLocation;
 	FTimerHandle ResetTimerHandle;
-	bool bIsLowered = false;
 
 	void TryResetWall();
 

@@ -29,7 +29,6 @@ void ATriggerWall::TryResetWall()
 
 	if (OverlappingActors.Num() == 0)
 	{
-		bIsLowered = false;
 		ResetWall();
 	}
 	else
@@ -46,8 +45,6 @@ void ATriggerWall::Tick(float DeltaTime)
 
 void ATriggerWall::TriggerLowering_Implementation()
 {
-	if (bIsLowered) return;
-
 	bIsLowered = true;
 	GetWorldTimerManager().SetTimer(ResetTimerHandle, this, &ThisClass::TryResetWall, ResetDelay, false);
 }

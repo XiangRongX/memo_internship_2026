@@ -39,6 +39,14 @@ void ATHProjectile::BeginPlay()
 	Super::BeginPlay();
 	
 	Sphere->OnComponentHit.AddDynamic(this, &ATHProjectile::OnHit);
+
+	float SpawnZ = GetActorLocation().Z;
+	if (ProjectileMovement)
+	{
+		ProjectileMovement->bConstrainToPlane = true;
+		ProjectileMovement->SetPlaneConstraintNormal(FVector(0.f, 0.f, 1.f));
+		ProjectileMovement->SetPlaneConstraintOrigin(FVector(0.f, 0.f, SpawnZ));
+	}
 }
 
 void ATHProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)

@@ -57,7 +57,7 @@ private:
 	FVector TargetTurretLocation;
 	FRotator TurretRelativeRotation;
 
-	EWeaponType CurrentWeaponType = EWeaponType::Double;
+	EWeaponType CurrentWeaponType = EWeaponType::Normal;
 	void FireNormal();
 	void FireDouble();
 	void FireLaser();
