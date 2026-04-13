@@ -7,6 +7,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Actors/TriggerWall.h"
+#include "TankHero/TankHero.h"
 
 ATHProjectile::ATHProjectile()
 {
@@ -14,7 +16,8 @@ ATHProjectile::ATHProjectile()
 
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	RootComponent = Sphere;
-	Sphere->SetCollisionProfileName(TEXT("BlockAll"));
+	Sphere->SetCollisionObjectType(ECC_Projectile);
+	Sphere->SetCollisionProfileName(FName("BlockAll"));
 
 	ProjectileEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("ProjectileEffect"));
 	ProjectileEffect->SetupAttachment(RootComponent);
@@ -53,6 +56,11 @@ void ATHProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 		if (CurrentBounces > MaxBounces)
 		{
 			Destroy();
+		}
+
+		if (ATriggerWall* TiggerWall = Cast<ATriggerWall>(OtherActor))
+		{
+			TiggerWall->TriggerLowering();
 		}
 	}
 }
