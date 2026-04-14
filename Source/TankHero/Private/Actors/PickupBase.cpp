@@ -6,6 +6,7 @@
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
+#include "TankHero/TankHero.h"
 
 APickupBase::APickupBase()
 {
@@ -15,6 +16,8 @@ APickupBase::APickupBase()
     RootComponent = Sphere;
     Sphere->SetSphereRadius(50.f);
     Sphere->SetCollisionProfileName(TEXT("Trigger"));
+	Sphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+    Sphere->SetCollisionResponseToChannel(ECC_Player, ECollisionResponse::ECR_Overlap);
 
 	Effect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("Effect"));
 	Effect->SetupAttachment(Sphere);

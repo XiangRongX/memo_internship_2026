@@ -58,6 +58,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
 	float Speed = 800.f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Animation")
+	TObjectPtr<UAnimMontage> FireMontage;
+
 private:
 	
 

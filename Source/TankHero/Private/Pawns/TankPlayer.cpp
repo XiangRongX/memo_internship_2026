@@ -160,6 +160,11 @@ void ATankPlayer::Fire()
 {
 	if (!bCanFire) return;
 
+	if(FireMontage)
+	{
+		Mesh->GetAnimInstance()->Montage_Play(FireMontage);
+	}
+
 	switch (CurrentWeaponType)
 	{
 	case EWeaponType::Normal:
