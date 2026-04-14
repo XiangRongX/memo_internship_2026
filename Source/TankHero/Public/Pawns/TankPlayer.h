@@ -50,6 +50,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<USkeletalMeshComponent> RightWheel;
 
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
+	float FireCooldown = 0.5f;
+
 private:
 	TWeakObjectPtr<ATHPlayerController> PlayerController;
 
@@ -62,4 +65,8 @@ private:
 	void FireDouble();
 	void FireLaser();
 	void FireSonic();
+
+	FTimerHandle CooldownTimerHandle;
+	bool bCanFire = true;
+	void ResetFire() { bCanFire = true; }
 };

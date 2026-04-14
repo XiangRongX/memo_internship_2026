@@ -8,6 +8,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Actors/THProjectile.h"
 #include "Kismet/GameplayStatics.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraComponent.h"
 
 ATankPlayer::ATankPlayer()
 {
@@ -106,6 +108,48 @@ void ATankPlayer::FireDouble()
 
 void ATankPlayer::FireLaser()
 {
+	FVector Start = Mesh->GetSocketLocation(TEXT("Muzzle"));
+	FRotator Rotation = Mesh->GetSocketRotation(TEXT("Muzzle"));
+	Rotation.Pitch = 0.f;
+	Rotation.Roll = 0.f;
+	FVector Direction = Rotation.Vector();
+	FVector End = Start + (Direction * 5000.f);
+	FVector ActualEnd = End;
+
+	TArray<FHitResult> OutHits;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+
+	bool bHit = GetWorld()->LineTraceMultiByChannel(OutHits, Start, End, ECC_Visibility, Params);
+	if (bHit)
+	{
+		for (const FHitResult& Hit : OutHits)
+		{
+			if (Hit.GetActor()->IsRootComponentStatic() || Hit.GetActor()->ActorHasTag("Wall"))
+			{
+				ActualEnd = Hit.ImpactPoint;
+				break;
+			}
+			if (Hit.GetActor() && Hit.GetActor()->ActorHasTag("Enemy"))
+			{
+				UGameplayStatics::ApplyDamage(Hit.GetActor(), Damage, GetController(), this, nullptr);
+			}
+		}
+	}
+
+	if (LaserEffect)
+	{
+		UNiagaraComponent* LaserComp = UNiagaraFunctionLibrary::SpawnSystemAttached(LaserEffect, Mesh, FName("Muzzle"), FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget, true);
+		if (LaserComp)
+		{
+			LaserComp->SetVariableVec3(TEXT("Beam End"), ActualEnd);
+		}
+	}
+
+	if (LaserSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, LaserSound, GetActorLocation());
+	}
 }
 
 void ATankPlayer::FireSonic()
@@ -114,6 +158,8 @@ void ATankPlayer::FireSonic()
 
 void ATankPlayer::Fire()
 {
+	if (!bCanFire) return;
+
 	switch (CurrentWeaponType)
 	{
 	case EWeaponType::Normal:
@@ -129,4 +175,7 @@ void ATankPlayer::Fire()
 		FireSonic();
 		break;
 	}
+
+	bCanFire = false;
+	GetWorldTimerManager().SetTimer(CooldownTimerHandle, this, &ThisClass::ResetFire, FireCooldown);
 }

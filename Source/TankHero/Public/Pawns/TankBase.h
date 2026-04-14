@@ -11,6 +11,7 @@ class UCapsuleComponent;
 class ATHPlayerController;
 class UFloatingPawnMovement;
 class ATHProjectile;
+class UNiagaraSystem;
 
 UCLASS()
 class TANKHERO_API ATankBase : public APawn
@@ -39,8 +40,23 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "TH|Weapon")
 	TSubclassOf<ATHProjectile> SonicProjectileClass;
 
+	UPROPERTY(EditAnywhere, Category = "TH|Weapon")
+	TObjectPtr<UNiagaraSystem> LaserEffect;
+
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Sounds")
 	TObjectPtr<USoundBase> FireSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Sounds")
+	TObjectPtr<USoundBase> LaserSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
+	float Damage = 20.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
+	float Health = 100.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
+	float Speed = 800.f;
 
 private:
 	

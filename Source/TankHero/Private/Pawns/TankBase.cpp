@@ -25,7 +25,10 @@ void ATankBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-
+	if (MovementComponent)
+	{
+		MovementComponent->MaxSpeed = Speed;
+	}
 }
 
 void ATankBase::Tick(float DeltaTime)
