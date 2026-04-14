@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
+#include "Actors/TriggerWall.h"
 
 ATankPlayer::ATankPlayer()
 {
@@ -128,6 +129,12 @@ void ATankPlayer::FireLaser()
 			if (Hit.GetActor()->IsRootComponentStatic() || Hit.GetActor()->ActorHasTag("Wall"))
 			{
 				ActualEnd = Hit.ImpactPoint;
+
+				if (ATriggerWall* TriggerWall = Cast<ATriggerWall>(Hit.GetActor()))
+				{
+					TriggerWall->TriggerLowering();
+				}
+
 				break;
 			}
 			if (Hit.GetActor() && Hit.GetActor()->ActorHasTag("Enemy"))
