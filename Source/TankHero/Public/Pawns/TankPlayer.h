@@ -21,8 +21,12 @@ class TANKHERO_API ATankPlayer : public ATankBase
 public:
 	ATankPlayer();
 	virtual void Tick(float DeltaTime) override;
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	void Fire();
+	void ActivateShield(float Duration);
+	void BoostSpeed(float SpeedToAdd, float Duration);
+	void IncreaseBounce(int32 BounceToAdd);
 
 	void UpdateChassisTargetVector(FVector MoveVector) { TargetChassisVector = MoveVector; }
 	void UpdateTurretTarget(FVector MouseLocation) { TargetTurretLocation = MouseLocation; }
@@ -31,6 +35,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void HandleDeath() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Movement")
 	float ChassisRotateSpeed = 10.f;
@@ -69,4 +74,12 @@ private:
 	FTimerHandle CooldownTimerHandle;
 	bool bCanFire = true;
 	void ResetFire() { bCanFire = true; }
+
+	bool bIsShielded = false;
+	FTimerHandle ShieldTimer;
+	FTimerHandle SpeedTimer;
+	void DeactivateShield();
+	void ResetSpeed();
+
+	int32 BounceToIncrease = 0;
 };

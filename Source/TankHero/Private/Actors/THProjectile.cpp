@@ -25,8 +25,8 @@ ATHProjectile::ATHProjectile()
 	ProjectileEffect->bAutoActivate = true;
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
-	ProjectileMovement->InitialSpeed = 2000.f;
-	ProjectileMovement->MaxSpeed = 2000.f;
+	ProjectileMovement->InitialSpeed = Speed;
+	ProjectileMovement->MaxSpeed = Speed;
 	ProjectileMovement->ProjectileGravityScale = 0.f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bShouldBounce = true;
@@ -91,5 +91,10 @@ void ATHProjectile::Destroyed()
 	}
 
 	Super::Destroyed();
+}
+
+void ATHProjectile::AddToBounce(int32 BounceToAdd)
+{
+	MaxBounces += BounceToAdd;
 }
 

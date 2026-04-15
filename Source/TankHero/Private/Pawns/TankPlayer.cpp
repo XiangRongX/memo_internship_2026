@@ -12,6 +12,7 @@
 #include "NiagaraComponent.h"
 #include "Actors/TriggerWall.h"
 #include "Actors/SonicProjectile.h"
+#include "GameFramework/FloatingPawnMovement.h" 
 
 ATankPlayer::ATankPlayer()
 {
@@ -59,11 +60,24 @@ void ATankPlayer::Tick(float DeltaTime)
     TurretRelativeRotation.Roll = 0.f;
 }
 
+float ATankPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	if (!bIsShielded)
+	{
+		return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	}
+	return 0.f;
+}
+
 void ATankPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 
 	PlayerController = Cast<ATHPlayerController>(GetController());
+}
+
+void ATankPlayer::HandleDeath()
+{
 }
 
 void ATankPlayer::FireNormal()
@@ -78,7 +92,8 @@ void ATankPlayer::FireNormal()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
 	SpawnParams.Instigator = GetInstigator();
-	GetWorld()->SpawnActor<ATHProjectile>(NormalProjectileClass, SpawnLocation, SpawnRotation, SpawnParams);
+	ATHProjectile* Projectile = GetWorld()->SpawnActor<ATHProjectile>(NormalProjectileClass, SpawnLocation, SpawnRotation, SpawnParams);
+	Projectile->AddToBounce(BounceToIncrease);
 
 	if (FireSound)
 	{
@@ -99,8 +114,10 @@ void ATankPlayer::FireDouble()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.Owner = this;
 	SpawnParams.Instigator = GetInstigator();
-	GetWorld()->SpawnActor<ATHProjectile>(NormalProjectileClass, LeftSpawnLocation, SpawnRotation, SpawnParams);
-	GetWorld()->SpawnActor<ATHProjectile>(NormalProjectileClass, RightSpawnLocation, SpawnRotation, SpawnParams);
+	ATHProjectile* Projectile1 = GetWorld()->SpawnActor<ATHProjectile>(NormalProjectileClass, LeftSpawnLocation, SpawnRotation, SpawnParams);
+	ATHProjectile* Projectile2 = GetWorld()->SpawnActor<ATHProjectile>(NormalProjectileClass, RightSpawnLocation, SpawnRotation, SpawnParams);
+	Projectile1->AddToBounce(BounceToIncrease);
+	Projectile2->AddToBounce(BounceToIncrease);
 
 	if (FireSound)
 	{
@@ -181,6 +198,16 @@ void ATankPlayer::FireSonic()
 	}
 }
 
+void ATankPlayer::DeactivateShield()
+{
+	bIsShielded = false;
+}
+
+void ATankPlayer::ResetSpeed()
+{
+	MovementComponent->MaxSpeed = Speed;
+}
+
 void ATankPlayer::Fire()
 {
 	if (!bCanFire) return;
@@ -208,4 +235,21 @@ void ATankPlayer::Fire()
 
 	bCanFire = false;
 	GetWorldTimerManager().SetTimer(CooldownTimerHandle, this, &ThisClass::ResetFire, FireCooldown);
+}
+
+void ATankPlayer::ActivateShield(float Duration)
+{
+	bIsShielded = true;
+	GetWorldTimerManager().SetTimer(ShieldTimer, this, &ATankPlayer::DeactivateShield, Duration);
+}
+
+void ATankPlayer::BoostSpeed(float SpeedToAdd, float Duration)
+{
+	MovementComponent->MaxSpeed = Speed + SpeedToAdd;
+	GetWorldTimerManager().SetTimer(SpeedTimer, this, &ATankPlayer::ResetSpeed, Duration);
+}
+
+void ATankPlayer::IncreaseBounce(int32 BounceToAdd)
+{
+	BounceToIncrease += BounceToAdd;
 }

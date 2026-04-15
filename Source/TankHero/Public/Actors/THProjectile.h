@@ -21,6 +21,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void Destroyed() override;
 
+	void AddToBounce(int32 BounceToAdd);
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -34,7 +36,7 @@ protected:
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
-	float Damage = 20.f;
+	float Speed = 800.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
 	int32 MaxBounces = 3;

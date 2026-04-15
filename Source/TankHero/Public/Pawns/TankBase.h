@@ -22,11 +22,13 @@ class TANKHERO_API ATankBase : public APawn
 public:
 	ATankBase();
 	virtual void Tick(float DeltaTime) override;
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 	float GetDamage() const { return Damage; }
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void HandleDeath();
 
 	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<USkeletalMeshComponent> Mesh;
@@ -59,7 +61,10 @@ protected:
 	float Damage = 20.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
-	float Health = 100.f;
+	float Health;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
+	float MaxHealth = 100.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
 	float Speed = 800.f;

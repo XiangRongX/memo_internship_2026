@@ -32,14 +32,11 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<UProjectileMovementComponent> ProjectileMovement;
 
-	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
-	float ExpansionRate = 500.f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
-	float MaxRadius = 800.f;
-
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Effects")
 	TObjectPtr<UNiagaraSystem> ImpactEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
+	float Speed = 800.f;
 
 private:	
 	UFUNCTION()

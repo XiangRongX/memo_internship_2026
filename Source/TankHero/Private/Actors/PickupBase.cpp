@@ -15,7 +15,6 @@ APickupBase::APickupBase()
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
     RootComponent = Sphere;
     Sphere->SetSphereRadius(50.f);
-    Sphere->SetCollisionProfileName(TEXT("Trigger"));
 	Sphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
     Sphere->SetCollisionResponseToChannel(ECC_Player, ECollisionResponse::ECR_Overlap);
 
