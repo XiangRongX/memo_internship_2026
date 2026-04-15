@@ -12,6 +12,7 @@ class ATHPlayerController;
 class UFloatingPawnMovement;
 class ATHProjectile;
 class UNiagaraSystem;
+class ASonicProjectile;
 
 UCLASS()
 class TANKHERO_API ATankBase : public APawn
@@ -21,6 +22,8 @@ class TANKHERO_API ATankBase : public APawn
 public:
 	ATankBase();
 	virtual void Tick(float DeltaTime) override;
+
+	float GetDamage() const { return Damage; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -38,7 +41,7 @@ protected:
 	TSubclassOf<ATHProjectile> NormalProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "TH|Weapon")
-	TSubclassOf<ATHProjectile> SonicProjectileClass;
+	TSubclassOf<ASonicProjectile> SonicProjectileClass;
 
 	UPROPERTY(EditAnywhere, Category = "TH|Weapon")
 	TObjectPtr<UNiagaraSystem> LaserEffect;
@@ -48,6 +51,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Sounds")
 	TObjectPtr<USoundBase> LaserSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Sounds")
+	TObjectPtr<USoundBase> SonicSound;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
 	float Damage = 20.f;

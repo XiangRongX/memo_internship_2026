@@ -9,6 +9,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "Actors/TriggerWall.h"
 #include "TankHero/TankHero.h"
+#include "Pawns/TankBase.h"
 
 ATHProjectile::ATHProjectile()
 {
@@ -53,11 +54,14 @@ void ATHProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 {
 	if (OtherActor && OtherActor != this)
 	{
-		if (OtherActor->ActorHasTag("Enemy"))
+		if (ATankBase* Tank = Cast<ATankBase>(GetOwner()))
 		{
-			UGameplayStatics::ApplyDamage(OtherActor, Damage, GetInstigatorController(), this, UDamageType::StaticClass());
-			Destroy(); 
-			return;
+			if (OtherActor->ActorHasTag("Enemy"))
+			{
+				UGameplayStatics::ApplyDamage(OtherActor, Tank->GetDamage(), GetInstigatorController(), this, UDamageType::StaticClass());
+				Destroy();
+				return;
+			}
 		}
 
 		CurrentBounces++;

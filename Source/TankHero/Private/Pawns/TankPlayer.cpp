@@ -11,6 +11,7 @@
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
 #include "Actors/TriggerWall.h"
+#include "Actors/SonicProjectile.h"
 
 ATankPlayer::ATankPlayer()
 {
@@ -161,6 +162,23 @@ void ATankPlayer::FireLaser()
 
 void ATankPlayer::FireSonic()
 {
+	if (!SonicProjectileClass) return;
+
+	FVector SpawnLocation = Mesh->GetSocketLocation(TEXT("Muzzle"));
+	FRotator SpawnRotation = Mesh->GetSocketRotation(TEXT("Muzzle"));
+	SpawnRotation.Pitch = 0.f;
+	SpawnRotation.Roll = 0.f;
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Owner = this; 
+	SpawnParams.Instigator = GetInstigator();
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	GetWorld()->SpawnActor<ASonicProjectile>(SonicProjectileClass, SpawnLocation, SpawnRotation, SpawnParams);
+
+	if (SonicSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, SonicSound, GetActorLocation());
+	}
 }
 
 void ATankPlayer::Fire()
