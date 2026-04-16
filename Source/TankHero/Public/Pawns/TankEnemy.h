@@ -20,6 +20,9 @@ class TANKHERO_API ATankEnemy : public ATankBase
 public:
 	ATankEnemy();
 
+	FRotator GetTurretRelativeRotation() const { return TurretRelativeRotation; }
+	FName GetTankName() const { return TankName; }
+
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 
@@ -31,7 +34,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "TH|AI")
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
-private:
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
+	FName TankName;
 
+private:
+	FRotator TurretRelativeRotation;
 
 };
