@@ -18,11 +18,7 @@ ATHProjectile::ATHProjectile()
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	RootComponent = Sphere;
 	Sphere->SetCollisionObjectType(ECC_Projectile);
-	Sphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-	Sphere->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
-	Sphere->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Ignore);
-	Sphere->SetCollisionResponseToChannel(ECC_Projectile, ECollisionResponse::ECR_Ignore);
-	Sphere->SetCollisionResponseToChannel(ECC_Player, ECollisionResponse::ECR_Ignore);
+	Sphere->SetCollisionProfileName(FName("BlockAll"));
 
 	ProjectileEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("ProjectileEffect"));
 	ProjectileEffect->SetupAttachment(RootComponent);

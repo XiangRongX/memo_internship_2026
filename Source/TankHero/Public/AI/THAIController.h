@@ -7,6 +7,9 @@
 #include "THAIController.generated.h"
 
 class UBehaviorTreeComponent;
+class UAISenseConfig_Sight;
+class UAIPerceptionComponent;
+struct FAIStimulus;
 
 /**
  * 
@@ -18,7 +21,19 @@ class TANKHERO_API ATHAIController : public AAIController
 	
 public:
 	ATHAIController();
+	virtual void Tick(float DeltaTime) override;
+
+protected:
+	virtual void OnPossess(APawn* InPawn) override;
 
 	UPROPERTY()
 	TObjectPtr<UBehaviorTreeComponent> BehaviorTreeComponent;
+
+	UPROPERTY()
+	TObjectPtr<UAIPerceptionComponent> AIPerceptionComponent;
+
+	TObjectPtr<UAISenseConfig_Sight> SightConfig;
+
+	UFUNCTION()
+	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 };

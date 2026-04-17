@@ -11,14 +11,18 @@ ATankBase::ATankBase()
 
 	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
 	RootComponent = Capsule;
+	Capsule->SetCanEverAffectNavigation(false);
+	Capsule->CanCharacterStepUpOn = ECB_No;
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
 
 	MovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("TankMovementComponent"));
-	MovementComponent->MaxSpeed = 800.f;
+	MovementComponent->MaxSpeed = 500.f;
 	MovementComponent->Acceleration = 2000.f;
 	MovementComponent->Deceleration = 4000.f; 
+	MovementComponent->bConstrainToPlane = true;
+	MovementComponent->SetPlaneConstraintNormal(FVector(0.0f, 0.0f, 1.0f));
 
 	Health = MaxHealth;
 }

@@ -67,7 +67,7 @@ protected:
 	float MaxHealth = 100.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
-	float Speed = 800.f;
+	float Speed = 500.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Animation")
 	TObjectPtr<UAnimMontage> FireMontage;

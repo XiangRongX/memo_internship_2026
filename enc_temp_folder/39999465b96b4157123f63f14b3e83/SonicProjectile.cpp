@@ -17,12 +17,7 @@ ASonicProjectile::ASonicProjectile()
 
 	Sphere = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere"));
 	RootComponent = Sphere;
-	Sphere->SetCollisionObjectType(ECC_Projectile);
 	Sphere->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
-	Sphere->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
-	Sphere->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Ignore);
-	Sphere->SetCollisionResponseToChannel(ECC_Projectile, ECollisionResponse::ECR_Ignore);
-	Sphere->SetCollisionResponseToChannel(ECC_Player, ECollisionResponse::ECR_Ignore);
 
 	ProjectileEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("ProjectileEffect"));
 	ProjectileEffect->SetupAttachment(RootComponent);

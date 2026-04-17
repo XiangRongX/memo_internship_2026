@@ -19,14 +19,22 @@ class TANKHERO_API ATankEnemy : public ATankBase
 	
 public:
 	ATankEnemy();
+	virtual void Tick(float DeltaTime) override;
+	void Fire();
 
+	void UpdateChassisTargetVector(FVector TargetVector) { TargetChassisVector = TargetVector; }
+	void UpdateTurretTarget(FVector TargetLocation) { TargetTurretLocation = TargetLocation; }
 	FRotator GetTurretRelativeRotation() const { return TurretRelativeRotation; }
 	FName GetTankName() const { return TankName; }
 
 protected:
 	virtual void PossessedBy(AController* NewController) override;
 
-	void Fire();
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Movement")
+	float ChassisRotateSpeed = 20.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Movement")
+	float TurretRotateSpeed = 30.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
 	EWeaponType CurrentWeaponType = EWeaponType::Normal;
@@ -38,6 +46,13 @@ protected:
 	FName TankName;
 
 private:
+	FVector TargetChassisVector;
+	FVector TargetTurretLocation;
 	FRotator TurretRelativeRotation;
+
+	void FireNormal();
+	void FireDouble();
+	void FireLaser();
+	void FireSonic();
 
 };
