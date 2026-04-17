@@ -60,7 +60,13 @@ void ATHProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPri
 	{
 		if (ATankBase* Tank = Cast<ATankBase>(GetOwner()))
 		{
-			if (OtherActor->ActorHasTag("Enemy"))
+			if (Tank->ActorHasTag("Player") && OtherActor->ActorHasTag("Enemy"))
+			{
+				UGameplayStatics::ApplyDamage(OtherActor, Tank->GetDamage(), GetInstigatorController(), this, UDamageType::StaticClass());
+				Destroy();
+				return;
+			}
+			if (Tank->ActorHasTag("Enemy") && OtherActor->ActorHasTag("Player"))
 			{
 				UGameplayStatics::ApplyDamage(OtherActor, Tank->GetDamage(), GetInstigatorController(), this, UDamageType::StaticClass());
 				Destroy();
