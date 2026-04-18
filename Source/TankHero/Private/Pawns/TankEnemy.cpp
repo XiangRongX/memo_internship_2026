@@ -46,6 +46,28 @@ void ATankEnemy::Tick(float DeltaTime)
 	TurretRelativeRotation.Roll = 0.f;
 }
 
+float ATankEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	FVector HitDir = DamageCauser->GetActorLocation() - GetActorLocation();
+	HitDir.Normalize();
+	FVector LocalHitDir = GetActorQuat().UnrotateVector(HitDir);
+	float Angle = FMath::RadiansToDegrees(FMath::Atan2(LocalHitDir.Y, LocalHitDir.X));
+
+	FName SectionName = FName("Front");
+	if (Angle >= -45.f && Angle <= 45.f)        SectionName = FName("Front");
+	else if (Angle > 45.f && Angle <= 135.f)    SectionName = FName("Right");
+	else if (Angle < -45.f && Angle >= -135.f)  SectionName = FName("Left");
+	else                                        SectionName = FName("Back");
+
+	if (HitMontage)
+	{
+		Mesh->GetAnimInstance()->Montage_Play(HitMontage);
+		Mesh->GetAnimInstance()->Montage_JumpToSection(SectionName, HitMontage);
+	}
+
+	return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+}
+
 void ATankEnemy::PossessedBy(AController* NewController)
 {
     Super::PossessedBy(NewController);
@@ -56,6 +78,16 @@ void ATankEnemy::PossessedBy(AController* NewController)
         AIC->GetBlackboardComponent()->InitializeBlackboard(*BehaviorTree->BlackboardAsset);
         AIC->RunBehaviorTree(BehaviorTree);
     }
+}
+
+void ATankEnemy::HandleDeath()
+{
+	if (DeathEffect)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, DeathEffect, GetActorLocation(), GetActorRotation());
+	}
+
+	Destroy();
 }
 
 void ATankEnemy::Fire()

@@ -72,6 +72,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Animation")
 	TObjectPtr<UAnimMontage> FireMontage;
 
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Effects")
+	TObjectPtr<UNiagaraSystem> DeathEffect;
+
 private:
 	
 

@@ -64,8 +64,30 @@ float ATankPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEven
 {
 	if (!bIsShielded)
 	{
+		FVector HitDir = DamageCauser->GetActorLocation() - GetActorLocation();
+		HitDir.Normalize();
+		FVector LocalHitDir = GetActorQuat().UnrotateVector(HitDir);
+		float Angle = FMath::RadiansToDegrees(FMath::Atan2(LocalHitDir.Y, LocalHitDir.X));
+
+		FName SectionName = FName("Front");
+		if (Angle >= -45.f && Angle <= 45.f)        SectionName = FName("Front");
+		else if (Angle > 45.f && Angle <= 135.f)    SectionName = FName("Right");
+		else if (Angle < -45.f && Angle >= -135.f)  SectionName = FName("Left");
+		else                                        SectionName = FName("Back");
+
+		if (HitMontage)
+		{
+			Mesh->GetAnimInstance()->Montage_Play(HitMontage);
+			Mesh->GetAnimInstance()->Montage_JumpToSection(SectionName, HitMontage);
+			LeftWheel->GetAnimInstance()->Montage_Play(HitMontage_LeftWheel);
+			LeftWheel->GetAnimInstance()->Montage_JumpToSection(SectionName, HitMontage_LeftWheel);
+			RightWheel->GetAnimInstance()->Montage_Play(HitMontage_RightWheel);
+			RightWheel->GetAnimInstance()->Montage_JumpToSection(SectionName, HitMontage_RightWheel);
+		}
+
 		return Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	}
+
 	return 0.f;
 }
 
@@ -78,6 +100,11 @@ void ATankPlayer::BeginPlay()
 
 void ATankPlayer::HandleDeath()
 {
+	if (DeathEffect)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, DeathEffect, GetActorLocation(), GetActorRotation());
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Player has died"));
 }
 
 void ATankPlayer::FireNormal()
