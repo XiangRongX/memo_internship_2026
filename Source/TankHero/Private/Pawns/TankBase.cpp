@@ -4,6 +4,7 @@
 #include "Pawns/TankBase.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/FloatingPawnMovement.h" 
+#include "Components/HealthBarWidgetComponent.h"
 
 ATankBase::ATankBase()
 {
@@ -23,6 +24,9 @@ ATankBase::ATankBase()
 	MovementComponent->Deceleration = 4000.f; 
 	MovementComponent->bConstrainToPlane = true;
 	MovementComponent->SetPlaneConstraintNormal(FVector(0.0f, 0.0f, 1.0f));
+
+	HealthBarWidgetComponent = CreateDefaultSubobject<UHealthBarWidgetComponent>(TEXT("HealthBarWidgetComponent"));
+	HealthBarWidgetComponent->SetupAttachment(RootComponent);
 
 	Health = MaxHealth;
 }
@@ -53,6 +57,7 @@ float ATankBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent,
 	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
 	Health -= ActualDamage;
+	HealthBarWidgetComponent->UpdateHealth(Health, MaxHealth);
 	if(Health <= 0.f)
 	{
 		HandleDeath();

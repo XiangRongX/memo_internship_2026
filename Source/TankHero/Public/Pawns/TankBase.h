@@ -13,6 +13,7 @@ class UFloatingPawnMovement;
 class ATHProjectile;
 class UNiagaraSystem;
 class ASonicProjectile;
+class UHealthBarWidgetComponent;
 
 UCLASS()
 class TANKHERO_API ATankBase : public APawn
@@ -38,6 +39,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<UFloatingPawnMovement> MovementComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
+	TObjectPtr<UHealthBarWidgetComponent> HealthBarWidgetComponent;
 
 	UPROPERTY(EditAnywhere, Category = "TH|Weapon")
 	TSubclassOf<ATHProjectile> NormalProjectileClass;
