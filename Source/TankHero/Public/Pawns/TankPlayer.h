@@ -58,6 +58,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
 	float FireCooldown = 0.5f;
 
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Animation")
+	TObjectPtr<UAnimMontage> HitMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Animation")
+	TObjectPtr<UAnimMontage> HitMontage_LeftWheel;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Animation")
+	TObjectPtr<UAnimMontage> HitMontage_RightWheel;
+
 private:
 	TWeakObjectPtr<ATHPlayerController> PlayerController;
 

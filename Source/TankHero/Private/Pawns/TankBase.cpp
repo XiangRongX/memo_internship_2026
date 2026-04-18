@@ -39,6 +39,7 @@ void ATankBase::BeginPlay()
 
 void ATankBase::HandleDeath()
 {
+
 }
 
 void ATankBase::Tick(float DeltaTime)
