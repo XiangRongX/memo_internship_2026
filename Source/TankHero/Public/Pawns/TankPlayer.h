@@ -9,6 +9,7 @@
 
 class USpringArmComponent;
 class UCameraComponent;
+class UAIPerceptionStimuliSourceComponent;
 
 /**
  * 
@@ -54,6 +55,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<USkeletalMeshComponent> RightWheel;
+
+	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
+	TObjectPtr<UAIPerceptionStimuliSourceComponent> AIPerception;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
 	float FireCooldown = 0.5f;

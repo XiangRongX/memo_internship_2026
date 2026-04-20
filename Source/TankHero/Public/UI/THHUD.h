@@ -7,6 +7,8 @@
 #include "Types/THTypes.h"
 #include "THHUD.generated.h"
 
+class ATHGameMode;
+
 /**
  *
  */
@@ -47,8 +49,13 @@ protected:
 	TObjectPtr<UUserWidget> OverlayWidget;
 
 private:
+	TWeakObjectPtr<ATHGameMode> THGameMode;
+
 	UFUNCTION()
 	void HandleStateChanged(EGamePlayState NewState);
 
 	void ShowWidget(TObjectPtr<UUserWidget>& Instance, TSubclassOf<UUserWidget> Class);
+
+	UFUNCTION()
+	void RequestPause();
 };

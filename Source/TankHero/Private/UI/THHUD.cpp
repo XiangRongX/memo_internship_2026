@@ -15,8 +15,9 @@ void ATHHUD::BeginPlay()
 {
     Super::BeginPlay();
 
-    ATHGameMode* THGameMode = Cast<ATHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+    THGameMode = Cast<ATHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
     THGameMode->OnStateChanged.AddDynamic(this, &ThisClass::HandleStateChanged);
+    HandleStateChanged(EGamePlayState::Preparation);
 }
 
 void ATHHUD::HandleStateChanged(EGamePlayState NewState)
@@ -27,6 +28,7 @@ void ATHHUD::HandleStateChanged(EGamePlayState NewState)
         ShowWidget(OverlayWidget, OverlayWidgetClass);
         if (UTHOverlay* THOverlay = Cast<UTHOverlay>(OverlayWidget))
         {
+			THOverlay->OnPauseButtonClicked.AddDynamic(this, &ThisClass::RequestPause);
             if (UTHGameInstance* THGameInstance = Cast<UTHGameInstance>(GetGameInstance()))
             {
                 THOverlay->SetLevelText(THGameInstance->GetCurrentLevel());
@@ -38,17 +40,29 @@ void ATHHUD::HandleStateChanged(EGamePlayState NewState)
         if (UTHOverlay* THOverlay = Cast<UTHOverlay>(OverlayWidget))
         {
 			THOverlay->SetPauseButtonVisibility(true);
+            THOverlay->HideLevelText();
         }
         break;
 
     case EGamePlayState::Win:
         ShowWidget(WinWidget, WinWidgetClass);
+        if (UTHOverlay* THOverlay = Cast<UTHOverlay>(OverlayWidget))
+        {
+			THOverlay->SetPauseButtonVisibility(false);
+        }
         break;
 
     case EGamePlayState::Lose:
         ShowWidget(LoseWidget, LoseWidgetClass);
+        if (UTHOverlay* THOverlay = Cast<UTHOverlay>(OverlayWidget))
+        {
+            THOverlay->SetPauseButtonVisibility(false);
+        }
         break;
 
+	case EGamePlayState::Pause:
+        ShowWidget(PauseWidget, PauseWidgetClass);
+		break;
     }
 }
 
@@ -65,4 +79,9 @@ void ATHHUD::ShowWidget(TObjectPtr<UUserWidget>& Instance, TSubclassOf<UUserWidg
     {
         Instance->AddToViewport();
     }
+}
+
+void ATHHUD::RequestPause()
+{
+	THGameMode->HandleNewState(EGamePlayState::Pause);
 }

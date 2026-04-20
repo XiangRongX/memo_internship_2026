@@ -23,6 +23,7 @@ class TANKHERO_API ATHGameMode : public AGameModeBase
 public:
     void OnEnemyKilled();
     void OnPlayerDied();
+    void HandleNewState(EGamePlayState NewState);
 
     UPROPERTY(BlueprintAssignable)
     FOnStateChanged OnStateChanged;
@@ -35,12 +36,14 @@ protected:
 
 private:
     EGamePlayState CurrentState = EGamePlayState::None;
-    void HandleNewState(EGamePlayState NewState);
     void StartGame();
+    void HandleResult();
     void SetTanksActive(bool bIsActive);
 
     float StartTime;
     int32 TotalEnemies;
     TArray<AActor*> Enemies;
     TWeakObjectPtr<ATHPlayerController> PlayerController;
+
+    FTimerHandle ResultTimer;
 };

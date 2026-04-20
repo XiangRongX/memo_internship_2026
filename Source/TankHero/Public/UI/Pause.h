@@ -21,6 +21,8 @@ public:
 
 
 protected:
+	virtual void NativeOnInitialized() override;
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> Button_Resume;
 
@@ -32,4 +34,14 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UOptions> WBP_Options;
+
+private:
+	UFUNCTION()
+	void OnResumeButtonClicked();
+
+	UFUNCTION()
+	void OnRestartButtonClicked();
+
+	UFUNCTION()
+	void OnQuitButtonClicked();
 };

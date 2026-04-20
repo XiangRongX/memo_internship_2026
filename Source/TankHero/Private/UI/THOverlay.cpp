@@ -28,5 +28,11 @@ void UTHOverlay::NativeOnInitialized()
 	if (Button_Pause)
 	{
 		Button_Pause->SetVisibility(ESlateVisibility::Hidden);
+		Button_Pause->OnClicked.AddDynamic(this, &ThisClass::OnPauseClicked);
 	}
+}
+
+void UTHOverlay::OnPauseClicked()
+{
+	OnPauseButtonClicked.Broadcast();
 }

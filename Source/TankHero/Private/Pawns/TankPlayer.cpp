@@ -14,6 +14,8 @@
 #include "Actors/SonicProjectile.h"
 #include "GameFramework/FloatingPawnMovement.h" 
 #include "Game/THGameMode.h"
+#include "Components/HealthBarWidgetComponent.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
 
 ATankPlayer::ATankPlayer()
 {
@@ -36,6 +38,9 @@ ATankPlayer::ATankPlayer()
 	LeftWheel->SetupAttachment(Mesh);
 	RightWheel = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("RightWheel"));
 	RightWheel->SetupAttachment(Mesh);
+
+	AIPerception = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(TEXT("AIPerception"));
+	AIPerception->RegisterWithPerceptionSystem();
 
 }
 
@@ -113,6 +118,14 @@ void ATankPlayer::HandleDeath()
 			THGameMode->OnPlayerDied();
 		}
 	}
+
+	SetActorTickEnabled(false);
+	Mesh->SetVisibility(false);
+	LeftWheel->SetVisibility(false);
+	RightWheel->SetVisibility(false);
+	HealthBarWidgetComponent->SetVisibility(false);
+	SetActorEnableCollision(false);
+	AIPerception->UnregisterFromPerceptionSystem();
 }
 
 void ATankPlayer::FireNormal()
