@@ -20,4 +20,28 @@ void ALobbyHUD::BeginPlay()
 
 	LevelMenuWidget->SetVisibility(ESlateVisibility::Collapsed);
 	SettingsWidget->SetVisibility(ESlateVisibility::Collapsed);
+
+	MainMenuWidget->OnStartClicked.AddDynamic(this, &ThisClass::ShowLevelMenu);
+	MainMenuWidget->OnSettingsClicked.AddDynamic(this, &ThisClass::ShowSettingsMenu);
+}
+
+void ALobbyHUD::ShowMainMenu()
+{
+	MainMenuWidget->SetVisibility(ESlateVisibility::Visible);
+	LevelMenuWidget->SetVisibility(ESlateVisibility::Collapsed);
+	SettingsWidget->SetVisibility(ESlateVisibility::Collapsed);
+}
+
+void ALobbyHUD::ShowLevelMenu()
+{
+	MainMenuWidget->SetVisibility(ESlateVisibility::Collapsed);
+	LevelMenuWidget->SetVisibility(ESlateVisibility::Visible);
+	SettingsWidget->SetVisibility(ESlateVisibility::Collapsed);
+}
+
+void ALobbyHUD::ShowSettingsMenu()
+{
+	MainMenuWidget->SetVisibility(ESlateVisibility::Collapsed);
+	LevelMenuWidget->SetVisibility(ESlateVisibility::Collapsed);
+	SettingsWidget->SetVisibility(ESlateVisibility::Visible);
 }

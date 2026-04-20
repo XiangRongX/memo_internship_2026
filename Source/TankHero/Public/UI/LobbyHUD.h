@@ -43,6 +43,13 @@ protected:
 	TObjectPtr<USetting> SettingsWidget;
 
 private:
+	UFUNCTION()
+	void ShowMainMenu();
 
+	UFUNCTION()
+	void ShowLevelMenu();
+
+	UFUNCTION()
+	void ShowSettingsMenu();
 
 };
