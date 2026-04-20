@@ -3,3 +3,10 @@
 
 #include "Game/THGameInstance.h"
 
+void UTHGameInstance::SetMaxLevel(int32 NewMaxLevel)
+{
+	if (NewMaxLevel > MaxLevel)
+	{
+		MaxLevel = NewMaxLevel;
+	}
+}

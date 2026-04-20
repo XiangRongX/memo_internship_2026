@@ -43,5 +43,5 @@ void UPause::OnRestartButtonClicked()
 
 void UPause::OnQuitButtonClicked()
 {
-	//UGameplayStatics::OpenLevel(this, FName("MainMenu"));
+	UGameplayStatics::OpenLevel(this, FName("Lobby"));
 }

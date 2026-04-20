@@ -33,7 +33,7 @@ void ULose::NativeOnInitialized()
 
 void ULose::OnReturnButtonClicked()
 {
-	//UGameplayStatics::OpenLevel(this, FName("MainMenu"));
+	UGameplayStatics::OpenLevel(this, FName("Lobby"));
 }
 
 void ULose::OnRestartButtonClicked()

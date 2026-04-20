@@ -7,6 +7,7 @@
 #include "BrainComponent.h"
 #include "Player/THPlayerController.h"
 #include "Pawns/TankEnemy.h"
+#include "Game/THGameInstance.h"
 
 void ATHGameMode::OnEnemyKilled()
 {
@@ -65,6 +66,13 @@ void ATHGameMode::HandleNewState(EGamePlayState NewState)
         }
 
     case EGamePlayState::Win:
+        {
+            if (UTHGameInstance* THGameInstance = Cast<UTHGameInstance>(GetGameInstance()))
+            {
+                int32 CurrentLevel = THGameInstance->GetCurrentLevel();
+                THGameInstance->SetMaxLevel(CurrentLevel + 1);
+            }
+        }
     case EGamePlayState::Lose:
         {
             FInputModeUIOnly InputMode;

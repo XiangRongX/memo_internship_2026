@@ -17,10 +17,13 @@ class TANKHERO_API UTHGameInstance : public UGameInstance
 public:
 	void SetCurrentLevel(int32 NewLevel) { CurrentLevel = NewLevel; }
 	int32 GetCurrentLevel() const { return CurrentLevel; }
+	void SetMaxLevel(int32 NewMaxLevel);
+	int32 GetMaxLevel() const { return MaxLevel; }
 
 protected:
 
 
 private:
 	int32 CurrentLevel = 0;
+	int32 MaxLevel = 1;
 };

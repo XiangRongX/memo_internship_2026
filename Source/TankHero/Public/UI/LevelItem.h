@@ -19,12 +19,20 @@ class TANKHERO_API ULevelItem : public UUserWidget
 	
 public:
 	void Init(int32 Index);
+	void SetEnabled(bool bEnabled);
 
 protected:
+	virtual void NativeOnInitialized() override;
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> Button;
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> Level;
 
+private:
+	int32 LevelIndex;
+
+	UFUNCTION()
+	void OnButtonClicked();
 };

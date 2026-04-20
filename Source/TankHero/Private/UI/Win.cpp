@@ -27,7 +27,7 @@ void UWin::NativeOnInitialized()
 
 void UWin::OnReturnButtonClicked()
 {
-	//UGameplayStatics::OpenLevel(this, FName("MainMenu"));
+	UGameplayStatics::OpenLevel(this, FName("Lobby"));
 }
 
 void UWin::OnNextButtonClicked()
