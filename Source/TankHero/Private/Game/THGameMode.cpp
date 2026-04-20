@@ -45,7 +45,7 @@ void ATHGameMode::HandleNewState(EGamePlayState NewState)
     switch (CurrentState)
     {
     case EGamePlayState::Preparation:
-		SetTanksActive(false);
+        SetTanksActive(false);
         break;
 
     case EGamePlayState::Playing:
@@ -53,22 +53,30 @@ void ATHGameMode::HandleNewState(EGamePlayState NewState)
         StartTime = GetWorld()->GetTimeSeconds();
         break;
 
-	case EGamePlayState::Pause:
-    {
-        FInputModeUIOnly InputMode;
-        if (PlayerController.IsValid())
+    case EGamePlayState::Pause:
         {
-            PlayerController->SetInputMode(InputMode);
+            FInputModeUIOnly InputMode;
+            if (PlayerController.IsValid())
+            {
+                PlayerController->SetInputMode(InputMode);
+            }
+            UGameplayStatics::SetGamePaused(GetWorld(), true);
+            break;
         }
-        UGameplayStatics::SetGamePaused(GetWorld(), true);
-    }
-        break;
 
     case EGamePlayState::Win:
-	case EGamePlayState::Lose:
-        float FinalTime = GetWorld()->GetTimeSeconds() - StartTime;
-        GetWorldTimerManager().SetTimer(ResultTimer, this, &ThisClass::HandleResult, 1.f, false);
-        return;
+    case EGamePlayState::Lose:
+        {
+            FInputModeUIOnly InputMode;
+            if (PlayerController.IsValid())
+            {
+                PlayerController->SetInputMode(InputMode);
+            }
+            float FinalTime = GetWorld()->GetTimeSeconds() - StartTime;
+            GetWorldTimerManager().SetTimer(ResultTimer, this, &ThisClass::HandleResult, 1.f, false);
+            OnLevelEnd.Broadcast(FinalTime);
+            return;
+        }
     }
 
     OnStateChanged.Broadcast(NewState);

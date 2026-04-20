@@ -126,6 +126,7 @@ void ATankPlayer::HandleDeath()
 	HealthBarWidgetComponent->SetVisibility(false);
 	SetActorEnableCollision(false);
 	AIPerception->UnregisterFromPerceptionSystem();
+	MovementComponent->StopMovementImmediately();
 }
 
 void ATankPlayer::FireNormal()

@@ -19,7 +19,7 @@ class TANKHERO_API ATHHUD : public AHUD
 	GENERATED_BODY()
 
 public:
-
+	void SetLevelTime(float Time) { LevelTime = Time; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -54,8 +54,13 @@ private:
 	UFUNCTION()
 	void HandleStateChanged(EGamePlayState NewState);
 
+	UFUNCTION()
+	void HandleLevelEnd(float Time);
+
 	void ShowWidget(TObjectPtr<UUserWidget>& Instance, TSubclassOf<UUserWidget> Class);
 
 	UFUNCTION()
 	void RequestPause();
+
+	float LevelTime = 0.f;
 };

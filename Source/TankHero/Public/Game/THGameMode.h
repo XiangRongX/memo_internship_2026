@@ -11,6 +11,7 @@ class ATHPlayerController;
 class ATankEnmey;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStateChanged, EGamePlayState, NewState);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLevelEnd, float, LevelTime);
 
 /**
  * 
@@ -25,8 +26,8 @@ public:
     void OnPlayerDied();
     void HandleNewState(EGamePlayState NewState);
 
-    UPROPERTY(BlueprintAssignable)
     FOnStateChanged OnStateChanged;
+	FOnLevelEnd OnLevelEnd;
 
 protected:
     virtual void BeginPlay() override;

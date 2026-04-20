@@ -17,6 +17,7 @@ void ATHHUD::BeginPlay()
 
     THGameMode = Cast<ATHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
     THGameMode->OnStateChanged.AddDynamic(this, &ThisClass::HandleStateChanged);
+	THGameMode->OnLevelEnd.AddDynamic(this, &ThisClass::HandleLevelEnd);
     HandleStateChanged(EGamePlayState::Preparation);
 }
 
@@ -58,12 +59,21 @@ void ATHHUD::HandleStateChanged(EGamePlayState NewState)
         {
             THOverlay->SetPauseButtonVisibility(false);
         }
+        if (ULose* Lose = Cast<ULose>(LoseWidget))
+        {
+            Lose->SetTimeText(LevelTime);
+		}
         break;
 
 	case EGamePlayState::Pause:
         ShowWidget(PauseWidget, PauseWidgetClass);
 		break;
     }
+}
+
+void ATHHUD::HandleLevelEnd(float Time)
+{
+	LevelTime = Time;
 }
 
 void ATHHUD::ShowWidget(TObjectPtr<UUserWidget>& Instance, TSubclassOf<UUserWidget> Class)
