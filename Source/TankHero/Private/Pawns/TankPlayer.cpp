@@ -13,6 +13,7 @@
 #include "Actors/TriggerWall.h"
 #include "Actors/SonicProjectile.h"
 #include "GameFramework/FloatingPawnMovement.h" 
+#include "Game/THGameMode.h"
 
 ATankPlayer::ATankPlayer()
 {
@@ -104,7 +105,14 @@ void ATankPlayer::HandleDeath()
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, DeathEffect, GetActorLocation(), GetActorRotation());
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Player has died"));
+	
+	if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(this))
+	{
+		if (ATHGameMode* THGameMode = Cast<ATHGameMode>(GameMode))
+		{
+			THGameMode->OnPlayerDied();
+		}
+	}
 }
 
 void ATankPlayer::FireNormal()

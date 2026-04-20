@@ -18,7 +18,7 @@ class TANKHERO_API ULevelItem : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	void Initialize(int32 Index);
+	void Init(int32 Index);
 
 protected:
 	UPROPERTY(meta = (BindWidget))

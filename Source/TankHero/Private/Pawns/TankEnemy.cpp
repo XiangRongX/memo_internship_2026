@@ -14,6 +14,7 @@
 #include "Actors/SonicProjectile.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Game/THGameMode.h"
 
 ATankEnemy::ATankEnemy()
 {
@@ -85,6 +86,14 @@ void ATankEnemy::HandleDeath()
 	if (DeathEffect)
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, DeathEffect, GetActorLocation(), GetActorRotation());
+	}
+
+	if (AGameModeBase* GameMode = UGameplayStatics::GetGameMode(this))
+	{
+		if (ATHGameMode* THGameMode = Cast<ATHGameMode>(GameMode))
+		{
+			THGameMode->OnEnemyKilled();
+		}
 	}
 
 	Destroy();

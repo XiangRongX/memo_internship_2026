@@ -20,7 +20,7 @@ class TANKHERO_API ATHPlayerController : public APlayerController
 	GENERATED_BODY()
 	
 public:
-
+	void SetCanRotate(bool bRotate) { bCanRotate = bRotate; }
 
 protected:
 	virtual void BeginPlay() override;
@@ -43,6 +43,7 @@ protected:
 private:
 	TWeakObjectPtr<ATankPlayer> Player;
 
+	bool bCanRotate = true;
 	FVector CurrentMoveInput;
 	FVector MouseWorldLocation;
 };

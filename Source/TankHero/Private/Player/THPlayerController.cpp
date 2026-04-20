@@ -41,6 +41,7 @@ void ATHPlayerController::PlayerTick(float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 
 	if (!Player.IsValid()) return;
+	if (!bCanRotate) return;
 
 	FHitResult HitResult;
 	if (GetHitResultUnderCursor(ECC_Visibility, false, HitResult))

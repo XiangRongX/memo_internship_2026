@@ -18,9 +18,12 @@ class TANKHERO_API UTHOverlay : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-
+	void SetPauseButtonVisibility(bool bIsVisible);
+	void SetLevelText(int32 Level);
 
 protected:
+	virtual void NativeOnInitialized() override;
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> TextBlock_Level;
 

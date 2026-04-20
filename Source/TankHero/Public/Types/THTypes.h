@@ -11,3 +11,14 @@ enum class EWeaponType : uint8
     Laser       UMETA(DisplayName = "Laser Beam"),
     Sonic       UMETA(DisplayName = "Sonic Wave")
 };
+
+UENUM(BlueprintType)
+enum class EGamePlayState : uint8
+{
+    Preparation,
+    Playing,
+    Win,
+    Lose,
+    Pause,
+    None
+};

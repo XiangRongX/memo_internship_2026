@@ -24,7 +24,7 @@ void ULevelMenu::ConstructLevelGrid(int32 TotalLevels)
         ULevelItem* NewItem = CreateWidget<ULevelItem>(this, LevelItemClass);
         if (NewItem)
         {
-            NewItem->Initialize(i + 1);
+            NewItem->Init(i + 1);
 
             UUniformGridSlot* GridSlot = LevelGrid->AddChildToUniformGrid(NewItem);
             int32 Row = i / Columns;
