@@ -23,6 +23,8 @@ void ALobbyHUD::BeginPlay()
 
 	MainMenuWidget->OnStartClicked.AddDynamic(this, &ThisClass::ShowLevelMenu);
 	MainMenuWidget->OnSettingsClicked.AddDynamic(this, &ThisClass::ShowSettingsMenu);
+
+	SettingsWidget->OnReturnClicked.AddDynamic(this, &ThisClass::ShowMainMenu);
 }
 
 void ALobbyHUD::ShowMainMenu()

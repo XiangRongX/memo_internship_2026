@@ -8,7 +8,7 @@
 
 class UButton;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnButtonClicked);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMainMenuButtonClicked);
 
 /**
  * 
@@ -19,12 +19,12 @@ class TANKHERO_API UMainMenu : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	virtual void NativeOnInitialized() override;
-
-	FOnButtonClicked OnStartClicked;
-	FOnButtonClicked OnSettingsClicked;
+	FOnMainMenuButtonClicked OnStartClicked;
+	FOnMainMenuButtonClicked OnSettingsClicked;
 
 protected:
+	virtual void NativeOnInitialized() override;
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> Button_Start;
 
