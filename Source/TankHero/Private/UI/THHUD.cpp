@@ -51,6 +51,10 @@ void ATHHUD::HandleStateChanged(EGamePlayState NewState)
         {
 			THOverlay->SetPauseButtonVisibility(false);
         }
+        if (UWin* Win = Cast<UWin>(WinWidget))
+        {
+            Win->SetTimeText(LevelTime);
+        }
         break;
 
     case EGamePlayState::Lose:

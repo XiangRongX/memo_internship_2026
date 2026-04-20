@@ -18,9 +18,11 @@ class TANKHERO_API UWin : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-
+	void SetTimeText(float Time);
 
 protected:
+	virtual void NativeOnInitialized() override;
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UTextBlock> TextBlock_Time;
 
@@ -32,4 +34,14 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UButton> Button_Restart;
+
+private:
+	UFUNCTION()
+	void OnReturnButtonClicked();
+
+	UFUNCTION()
+	void OnNextButtonClicked();
+
+	UFUNCTION()
+	void OnRestartButtonClicked();
 };
