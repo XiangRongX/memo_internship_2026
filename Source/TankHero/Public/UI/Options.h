@@ -20,6 +20,9 @@ public:
 
 
 protected:
+	virtual void NativeConstruct() override;
+	virtual void NativeOnInitialized() override;
+
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCheckBox> CheckBox_Sound;
 
@@ -31,4 +34,11 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCheckBox> CheckBox_Vibrate;
+
+private:
+	UFUNCTION()
+	void OnSoundCheckBoxChanged(bool bIsChecked);
+
+	UFUNCTION()
+	void OnMusicCheckBoxChanged(bool bIsChecked);
 };
