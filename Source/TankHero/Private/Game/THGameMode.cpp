@@ -8,6 +8,7 @@
 #include "Player/THPlayerController.h"
 #include "Pawns/TankEnemy.h"
 #include "Game/THGameInstance.h"
+#include "Actors/THCameraActor.h"
 
 void ATHGameMode::OnEnemyKilled()
 {
@@ -28,6 +29,12 @@ void ATHGameMode::BeginPlay()
     Super::BeginPlay();
 
     PlayerController = Cast<ATHPlayerController>(UGameplayStatics::GetPlayerController(this, 0));
+    AActor* FoundCamera = UGameplayStatics::GetActorOfClass(this, ATHCameraActor::StaticClass());
+
+    if (PlayerController.IsValid() && FoundCamera)
+    {
+        PlayerController->SetViewTarget(FoundCamera);
+    }
 
     UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("Enemy"), Enemies);
     TotalEnemies = Enemies.Num();

@@ -45,12 +45,6 @@ protected:
 	float TurretRotateSpeed = 15.f;
 
 	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
-	TObjectPtr<USpringArmComponent> SpringArm;
-
-	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
-	TObjectPtr<UCameraComponent> Camera;
-
-	UPROPERTY(VisibleAnywhere, Category = "TH|Components")
 	TObjectPtr<USkeletalMeshComponent> LeftWheel;
 
 	UPROPERTY(VisibleAnywhere, Category = "TH|Components")

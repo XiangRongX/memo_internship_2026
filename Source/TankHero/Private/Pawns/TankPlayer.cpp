@@ -16,23 +16,11 @@
 #include "Game/THGameMode.h"
 #include "Components/HealthBarWidgetComponent.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
+#include "Actors/THCameraManager.h"
 
 ATankPlayer::ATankPlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->SetupAttachment(RootComponent);
-	SpringArm->SetUsingAbsoluteRotation(true);
-	SpringArm->bUsePawnControlRotation = false;
-	SpringArm->bInheritPitch = false;
-	SpringArm->bInheritRoll = false;
-	SpringArm->bInheritYaw = false;
-	SpringArm->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
-	SpringArm->TargetArmLength = 1000.f;
-
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(SpringArm);
 
 	LeftWheel = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("LeftWheel"));
 	LeftWheel->SetupAttachment(Mesh);
@@ -127,6 +115,14 @@ void ATankPlayer::HandleDeath()
 	SetActorEnableCollision(false);
 	AIPerception->UnregisterFromPerceptionSystem();
 	MovementComponent->StopMovementImmediately();
+
+	if (PlayerController.IsValid())
+	{
+		if (ATHCameraManager* CameraManager = Cast<ATHCameraManager>(PlayerController->PlayerCameraManager))
+		{
+			CameraManager->PlayExplosionShake(1.0f);
+		}
+	}
 }
 
 void ATankPlayer::FireNormal()

@@ -5,6 +5,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Pawns/TankPlayer.h"
+#include "Actors/THCameraManager.h"
 
 void ATHPlayerController::BeginPlay()
 {

@@ -23,6 +23,10 @@ public:
 	void SetMusicEnabled(bool bEnabled);
 	bool IsSoundEnabled() const { return bSoundEnabled; }
 	bool IsMusicEnabled() const { return bMusicEnabled; }
+	void SetFollowEnabled(bool bEnabled) { bFollowEnabled = bEnabled; }
+	bool IsFollowEnabled() const { return bFollowEnabled; }
+	void SetVibrateEnabled(bool bEnabled) { bVibrateEnabled = bEnabled; }
+	bool IsVibrateEnabled() const { return bVibrateEnabled; }
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "TH|Audio")

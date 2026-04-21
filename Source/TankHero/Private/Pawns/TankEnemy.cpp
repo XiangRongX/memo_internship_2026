@@ -15,6 +15,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Game/THGameMode.h"
+#include "Actors/THCameraManager.h"
 
 ATankEnemy::ATankEnemy()
 {
@@ -93,6 +94,14 @@ void ATankEnemy::HandleDeath()
 		if (ATHGameMode* THGameMode = Cast<ATHGameMode>(GameMode))
 		{
 			THGameMode->OnEnemyKilled();
+		}
+	}
+
+	if (APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0))
+	{
+		if (ATHCameraManager* CameraManager = Cast<ATHCameraManager>(PlayerController->PlayerCameraManager))
+		{
+			CameraManager->PlayExplosionShake(1.0f);
 		}
 	}
 
