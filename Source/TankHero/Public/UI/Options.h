@@ -41,4 +41,10 @@ private:
 
 	UFUNCTION()
 	void OnMusicCheckBoxChanged(bool bIsChecked);
+
+	UFUNCTION()
+	void OnFollowCheckBoxChanged(bool bIsChecked);
+
+	UFUNCTION()
+	void OnVibrateCheckBoxChanged(bool bIsChecked);
 };

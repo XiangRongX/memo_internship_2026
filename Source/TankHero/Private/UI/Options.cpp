@@ -13,6 +13,8 @@ void UOptions::NativeConstruct()
     {
         if (CheckBox_Music) CheckBox_Music->SetIsChecked(GameInstance->IsMusicEnabled());
         if (CheckBox_Sound) CheckBox_Sound->SetIsChecked(GameInstance->IsSoundEnabled());
+        if (CheckBox_Follow) CheckBox_Follow->SetIsChecked(GameInstance->IsFollowEnabled());
+        if (CheckBox_Vibrate) CheckBox_Vibrate->SetIsChecked(GameInstance->IsVibrateEnabled());
     }
 }
 
@@ -28,6 +30,14 @@ void UOptions::NativeOnInitialized()
     {
         CheckBox_Music->OnCheckStateChanged.AddDynamic(this, &UOptions::OnMusicCheckBoxChanged);
 	}
+    if (CheckBox_Follow)
+    {
+        CheckBox_Follow->OnCheckStateChanged.AddDynamic(this, &UOptions::OnFollowCheckBoxChanged);
+    }
+    if (CheckBox_Vibrate)
+    {
+        CheckBox_Vibrate->OnCheckStateChanged.AddDynamic(this, &UOptions::OnVibrateCheckBoxChanged);
+    }
 }
 
 void UOptions::OnSoundCheckBoxChanged(bool bIsChecked)
@@ -44,4 +54,20 @@ void UOptions::OnMusicCheckBoxChanged(bool bIsChecked)
     {
         GameInstance->SetMusicEnabled(bIsChecked);
 	}
+}
+
+void UOptions::OnFollowCheckBoxChanged(bool bIsChecked)
+{
+    if (UTHGameInstance* GameInstance = Cast<UTHGameInstance>(GetGameInstance()))
+    {
+        GameInstance->SetFollowEnabled(bIsChecked);
+    }
+}
+
+void UOptions::OnVibrateCheckBoxChanged(bool bIsChecked)
+{
+    if (UTHGameInstance* GameInstance = Cast<UTHGameInstance>(GetGameInstance()))
+    {
+        GameInstance->SetVibrateEnabled(bIsChecked);
+    }
 }
