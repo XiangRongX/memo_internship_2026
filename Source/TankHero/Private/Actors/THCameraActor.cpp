@@ -60,7 +60,7 @@ void ATHCameraActor::Tick(float DeltaTime)
     }
     else
     {
-        TargetRootLoc = FVector(-MoveLimit, 0.f, CameraRootLoc.Z);
+        TargetRootLoc = FVector(-MoveLimit / 2, 0.f, CameraRootLoc.Z);
         TargetRotation = FRotator(-60.f, 0.f, 0.f);  
         TargetArmLen = MaxArmLength;                  
     }
