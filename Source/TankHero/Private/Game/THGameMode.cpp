@@ -59,6 +59,10 @@ void ATHGameMode::HandleNewState(EGamePlayState NewState)
     case EGamePlayState::Playing:
         SetTanksActive(true);
         StartTime = GetWorld()->GetTimeSeconds();
+        if (UTHGameInstance* THGameInstance = Cast<UTHGameInstance>(GetGameInstance()))
+        {
+            THGameInstance->SwitchMusicState(EMusicState::Level);
+        }
         break;
 
     case EGamePlayState::Pause:
@@ -68,17 +72,31 @@ void ATHGameMode::HandleNewState(EGamePlayState NewState)
             {
                 PlayerController->SetInputMode(InputMode);
             }
+            if (UTHGameInstance* THGameInstance = Cast<UTHGameInstance>(GetGameInstance()))
+            {
+                THGameInstance->SwitchMusicState(EMusicState::None);
+            }
             UGameplayStatics::SetGamePaused(GetWorld(), true);
             break;
         }
 
     case EGamePlayState::Win:
         {
+            FInputModeUIOnly InputMode;
+            if (PlayerController.IsValid())
+            {
+                PlayerController->SetInputMode(InputMode);
+            }
+            float FinalTime = GetWorld()->GetTimeSeconds() - StartTime;
+            GetWorldTimerManager().SetTimer(ResultTimer, this, &ThisClass::HandleResult, 1.f, false);
+            OnLevelEnd.Broadcast(FinalTime);
             if (UTHGameInstance* THGameInstance = Cast<UTHGameInstance>(GetGameInstance()))
             {
                 int32 CurrentLevel = THGameInstance->GetCurrentLevel();
                 THGameInstance->SetMaxLevel(CurrentLevel + 1);
+                THGameInstance->SwitchMusicState(EMusicState::Win);
             }
+            return;
         }
     case EGamePlayState::Lose:
         {
@@ -90,6 +108,10 @@ void ATHGameMode::HandleNewState(EGamePlayState NewState)
             float FinalTime = GetWorld()->GetTimeSeconds() - StartTime;
             GetWorldTimerManager().SetTimer(ResultTimer, this, &ThisClass::HandleResult, 1.f, false);
             OnLevelEnd.Broadcast(FinalTime);
+            if (UTHGameInstance* THGameInstance = Cast<UTHGameInstance>(GetGameInstance()))
+            {
+                THGameInstance->SwitchMusicState(EMusicState::Lose);
+            }
             return;
         }
     }

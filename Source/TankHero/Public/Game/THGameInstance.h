@@ -6,6 +6,16 @@
 #include "Engine/GameInstance.h"
 #include "THGameInstance.generated.h"
 
+UENUM(BlueprintType)
+enum class EMusicState : uint8 
+{ 
+	Menu, 
+	Level, 
+	Win, 
+	Lose,
+	None
+};
+
 /**
  * 
  */
@@ -28,6 +38,9 @@ public:
 	void SetVibrateEnabled(bool bEnabled) { bVibrateEnabled = bEnabled; }
 	bool IsVibrateEnabled() const { return bVibrateEnabled; }
 
+	UFUNCTION(BlueprintCallable)
+	void SwitchMusicState(EMusicState NewState);
+
 protected:
 	UPROPERTY(EditAnywhere, Category = "TH|Audio")
 	TObjectPtr<USoundMix> GlobalSoundMix;
@@ -37,6 +50,21 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "TH|Audio")
 	TObjectPtr<USoundClass> SoundClass;
+
+	UPROPERTY(EditAnywhere, Category = "TH|Audio")
+	TObjectPtr<USoundBase> MenuMusic;
+
+	UPROPERTY(EditAnywhere, Category = "TH|Audio")
+	TArray<TObjectPtr<USoundBase>> LevelMusicList;
+
+	UPROPERTY(EditAnywhere, Category = "TH|Audio")
+	TObjectPtr<USoundBase> WinMusic;
+
+	UPROPERTY(EditAnywhere, Category = "TH|Audio")
+	TObjectPtr<USoundBase> LoseMusic;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UAudioComponent> BGMComponent;
 
 private:
 	int32 CurrentLevel = 0;
