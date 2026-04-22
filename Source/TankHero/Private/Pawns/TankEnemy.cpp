@@ -16,6 +16,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Game/THGameMode.h"
 #include "Actors/THCameraManager.h"
+#include "TankHero/TankHero.h"
 
 ATankEnemy::ATankEnemy()
 {
@@ -188,7 +189,7 @@ void ATankEnemy::FireLaser()
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 
-	bool bHit = GetWorld()->LineTraceMultiByChannel(OutHits, Start, End, ECC_Visibility, Params);
+	bool bHit = GetWorld()->LineTraceMultiByChannel(OutHits, Start, End, ECC_Laser, Params);
 	if (bHit)
 	{
 		for (const FHitResult& Hit : OutHits)

@@ -17,6 +17,7 @@
 #include "Components/HealthBarWidgetComponent.h"
 #include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "Actors/THCameraManager.h"
+#include "TankHero/TankHero.h"
 
 ATankPlayer::ATankPlayer()
 {
@@ -184,7 +185,7 @@ void ATankPlayer::FireLaser()
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 
-	bool bHit = GetWorld()->LineTraceMultiByChannel(OutHits, Start, End, ECC_Visibility, Params);
+	bool bHit = GetWorld()->LineTraceMultiByChannel(OutHits, Start, End, ECC_Laser, Params);
 	if (bHit)
 	{
 		for (const FHitResult& Hit : OutHits)

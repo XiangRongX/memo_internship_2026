@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/FloatingPawnMovement.h" 
 #include "Components/HealthBarWidgetComponent.h"
+#include "TankHero/TankHero.h"
 
 ATankBase::ATankBase()
 {
@@ -14,6 +15,7 @@ ATankBase::ATankBase()
 	RootComponent = Capsule;
 	Capsule->SetCanEverAffectNavigation(false);
 	Capsule->CanCharacterStepUpOn = ECB_No;
+	Capsule->SetCollisionResponseToChannel(ECC_Laser, ECR_Block);
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);

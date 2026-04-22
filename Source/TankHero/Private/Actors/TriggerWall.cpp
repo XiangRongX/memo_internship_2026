@@ -3,6 +3,7 @@
 
 #include "Actors/TriggerWall.h"
 #include "Components/BoxComponent.h"
+#include "TankHero/TankHero.h"
 
 ATriggerWall::ATriggerWall()
 {
@@ -13,6 +14,7 @@ ATriggerWall::ATriggerWall()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
+	Mesh->SetCollisionResponseToChannel(ECC_Laser, ECR_Block);
 
 }
 
