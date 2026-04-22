@@ -68,16 +68,27 @@ void ASonicProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent,
 {
 	if (!OtherActor || OtherActor == GetOwner() || DamagedActors.Contains(OtherActor)) return;
 
-	if (OtherActor->ActorHasTag(FName("Enemy")))
+	if (ATankBase* Tank = Cast<ATankBase>(GetOwner()))
 	{
-		if (ATankBase* Tank = Cast<ATankBase>(GetOwner()))
+		if (Tank->ActorHasTag("Player") && OtherActor->ActorHasTag("Enemy"))
 		{
 			UGameplayStatics::ApplyDamage(OtherActor, Tank->GetDamage(), GetInstigatorController(), this, UDamageType::StaticClass());
+			if (ImpactEffect)
+			{
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactEffect, SweepResult.ImpactPoint, SweepResult.ImpactNormal.Rotation());
+			}
+			return;
 		}
-		
-		if(ImpactEffect)
+		if (Tank->ActorHasTag("Enemy") && OtherActor->ActorHasTag("Player"))
 		{
-			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactEffect, SweepResult.ImpactPoint, SweepResult.ImpactNormal.Rotation());
+			UGameplayStatics::ApplyDamage(OtherActor, Tank->GetDamage(), GetInstigatorController(), this, UDamageType::StaticClass());
+			if (ImpactEffect)
+			{
+				UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactEffect, SweepResult.ImpactPoint, SweepResult.ImpactNormal.Rotation());
+			}
+			return;
 		}
 	}
+
+	
 }

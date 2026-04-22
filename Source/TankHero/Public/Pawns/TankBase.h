@@ -61,13 +61,13 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Sounds")
 	TObjectPtr<USoundBase> SonicSound;
 
-	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
+	UPROPERTY(EditAnywhere, Category = "TH|Settings")
 	float Damage = 20.f;
 
-	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
+	UPROPERTY(EditAnywhere, Category = "TH|Settings")
 	float Health;
 
-	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
+	UPROPERTY(EditAnywhere, Category = "TH|Settings")
 	float MaxHealth = 100.f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Settings")
