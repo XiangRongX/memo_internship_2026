@@ -91,6 +91,57 @@ void ATankPlayer::BeginPlay()
 	Super::BeginPlay();
 
 	PlayerController = Cast<ATHPlayerController>(GetController());
+
+	if (ShieldEffect)
+	{
+		ShieldEffectComponent = UNiagaraFunctionLibrary::SpawnSystemAttached(
+			ShieldEffect,
+			GetRootComponent(),
+			NAME_None,
+			FVector(0, 0, -90.f),
+			FRotator::ZeroRotator,
+			EAttachLocation::KeepRelativeOffset,
+			false
+		);
+		if (ShieldEffectComponent)
+		{
+			ShieldEffectComponent->Deactivate();
+		}
+	}
+
+	if (SpeedEffect)
+	{
+		SpeedEffectComponent = UNiagaraFunctionLibrary::SpawnSystemAttached(
+			SpeedEffect,
+			GetRootComponent(),
+			NAME_None,
+			FVector(0, 0, -70.f),
+			FRotator::ZeroRotator,
+			EAttachLocation::KeepRelativeOffset,
+			false
+		);
+		if (SpeedEffectComponent)
+		{
+			SpeedEffectComponent->Deactivate();
+		}
+	}
+
+	if (BounceEffect)
+	{
+		BounceEffectComponent = UNiagaraFunctionLibrary::SpawnSystemAttached(
+			BounceEffect,
+			GetRootComponent(),
+			NAME_None,
+			FVector(0, 0, -70.f),
+			FRotator::ZeroRotator,
+			EAttachLocation::KeepRelativeOffset,
+			false
+		);
+		if (BounceEffectComponent)
+		{
+			BounceEffectComponent->Deactivate();
+		}
+	}
 }
 
 void ATankPlayer::HandleDeath()
@@ -302,11 +353,21 @@ void ATankPlayer::FireSonic()
 void ATankPlayer::DeactivateShield()
 {
 	bIsShielded = false;
+
+	if (ShieldEffectComponent)
+	{
+		ShieldEffectComponent->Deactivate();
+	}
 }
 
 void ATankPlayer::ResetSpeed()
 {
 	MovementComponent->MaxSpeed = Speed;
+
+	if (SpeedEffectComponent)
+	{
+		SpeedEffectComponent->Deactivate();
+	}
 }
 
 void ATankPlayer::Fire()
@@ -342,15 +403,30 @@ void ATankPlayer::ActivateShield(float Duration)
 {
 	bIsShielded = true;
 	GetWorldTimerManager().SetTimer(ShieldTimer, this, &ATankPlayer::DeactivateShield, Duration);
+
+	if (ShieldEffectComponent)
+	{
+		ShieldEffectComponent->Activate(true);
+	}
 }
 
 void ATankPlayer::BoostSpeed(float SpeedToAdd, float Duration)
 {
 	MovementComponent->MaxSpeed = Speed + SpeedToAdd;
 	GetWorldTimerManager().SetTimer(SpeedTimer, this, &ATankPlayer::ResetSpeed, Duration);
+
+	if (SpeedEffectComponent)
+	{
+		SpeedEffectComponent->Activate(true);
+	}
 }
 
 void ATankPlayer::IncreaseBounce(int32 BounceToAdd)
 {
 	BounceToIncrease += BounceToAdd;
+
+	if (BounceEffectComponent)
+	{
+		BounceEffectComponent->Activate(true);
+	}
 }

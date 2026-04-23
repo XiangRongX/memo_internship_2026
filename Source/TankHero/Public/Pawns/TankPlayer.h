@@ -10,6 +10,8 @@
 class USpringArmComponent;
 class UCameraComponent;
 class UAIPerceptionStimuliSourceComponent;
+class UNiagaraSystem;
+class UNiagaraComponent;
 
 /**
  * 
@@ -64,6 +66,24 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Animation")
 	TObjectPtr<UAnimMontage> HitMontage_RightWheel;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Effects")
+	TObjectPtr<UNiagaraSystem> SpeedEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Effects")
+	TObjectPtr<UNiagaraSystem> ShieldEffect;
+
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Effects")
+	TObjectPtr<UNiagaraSystem> BounceEffect;
+
+	UPROPERTY()
+	TObjectPtr<UNiagaraComponent> SpeedEffectComponent;
+
+	UPROPERTY()
+	TObjectPtr<UNiagaraComponent> ShieldEffectComponent;
+
+	UPROPERTY()
+	TObjectPtr<UNiagaraComponent> BounceEffectComponent;
 
 private:
 	TWeakObjectPtr<ATHPlayerController> PlayerController;
