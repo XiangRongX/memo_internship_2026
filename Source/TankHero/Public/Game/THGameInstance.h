@@ -74,4 +74,6 @@ private:
 	bool bMusicEnabled = true;
 	bool bFollowEnabled = true;
 	bool bVibrateEnabled = true;
+
+	FTimerHandle MusicTimerHandle;
 };

@@ -35,7 +35,7 @@ void UTHGameInstance::SwitchMusicState(EMusicState NewState)
     {
         if (BGMComponent && BGMComponent->IsPlaying())
         {
-            BGMComponent->SetPaused(true);
+            BGMComponent->Stop(); 
         }
         return;
     }
@@ -47,7 +47,7 @@ void UTHGameInstance::SwitchMusicState(EMusicState NewState)
         TargetSound = MenuMusic;
         break;
     case EMusicState::Level:
-        if (BGMComponent && LevelMusicList.Contains(BGMComponent->Sound))
+        if (BGMComponent && BGMComponent->Sound && LevelMusicList.Contains(BGMComponent->Sound))
         {
             TargetSound = BGMComponent->Sound;
         }
@@ -79,41 +79,32 @@ void UTHGameInstance::SwitchMusicState(EMusicState NewState)
 
     if (BGMComponent)
     {
-        if (BGMComponent->Sound == TargetSound && BGMComponent->bIsPaused)
+        if (BGMComponent->Sound == TargetSound)
         {
-            if (IsMusicEnabled())
+            BGMComponent->SetVolumeMultiplier(1.0f);
+            if (!BGMComponent->IsPlaying() || BGMComponent->bIsPaused)
             {
                 BGMComponent->SetPaused(false);
+                BGMComponent->Play();
             }
-            return;
+            return; 
         }
 
-        if (BGMComponent->IsPlaying() && BGMComponent->Sound != TargetSound)
+        if (BGMComponent->IsPlaying())
         {
             BGMComponent->FadeOut(0.5f, 0.0f);
         }
-        else if (BGMComponent->Sound == TargetSound && BGMComponent->IsPlaying())
-        {
-            return;
-        }
 
-        FTimerHandle TimerHandle;
-        GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this, TargetSound]()
+        GetWorld()->GetTimerManager().ClearTimer(MusicTimerHandle);
+
+        GetWorld()->GetTimerManager().SetTimer(MusicTimerHandle, [this, TargetSound]()
             {
                 if (BGMComponent)
                 {
                     BGMComponent->SetSound(TargetSound);
-                    BGMComponent->SetPaused(false);
+                    BGMComponent->SetVolumeMultiplier(1.0f);
 
-                    if (IsMusicEnabled())
-                    {
-                        BGMComponent->FadeIn(0.f);
-                    }
-                    else
-                    {
-                        BGMComponent->Play();
-                        BGMComponent->SetVolumeMultiplier(0.0f);
-                    }
+                    BGMComponent->FadeIn(0.5f, 1.0f);
                 }
             }, 0.5f, false);
     }
