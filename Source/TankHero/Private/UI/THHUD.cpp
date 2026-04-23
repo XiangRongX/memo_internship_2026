@@ -18,6 +18,7 @@ void ATHHUD::BeginPlay()
     THGameMode = Cast<ATHGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
     THGameMode->OnStateChanged.AddDynamic(this, &ThisClass::HandleStateChanged);
 	THGameMode->OnLevelEnd.AddDynamic(this, &ThisClass::HandleLevelEnd);
+    THGameMode->OnLastLevel.AddDynamic(this, &ThisClass::HandleLastLevel);
     HandleStateChanged(EGamePlayState::Preparation);
 }
 
@@ -54,6 +55,10 @@ void ATHHUD::HandleStateChanged(EGamePlayState NewState)
         if (UWin* Win = Cast<UWin>(WinWidget))
         {
             Win->SetTimeText(LevelTime);
+            if (bLastLevel)
+            {
+                Win->SetNextButtonEnabled(false);
+            }
         }
         break;
 
@@ -78,6 +83,11 @@ void ATHHUD::HandleStateChanged(EGamePlayState NewState)
 void ATHHUD::HandleLevelEnd(float Time)
 {
 	LevelTime = Time;
+}
+
+void ATHHUD::HandleLastLevel()
+{
+    bLastLevel = true;
 }
 
 void ATHHUD::ShowWidget(TObjectPtr<UUserWidget>& Instance, TSubclassOf<UUserWidget> Class)

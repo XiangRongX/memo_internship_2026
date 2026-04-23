@@ -23,8 +23,6 @@ ATankEnemy::ATankEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
-
-	Capsule->SetCollisionProfileName(FName("Pawn"));
 }
 
 void ATankEnemy::Tick(float DeltaTime)
@@ -208,6 +206,15 @@ void ATankEnemy::FireLaser()
 			if (Hit.GetActor() && Hit.GetActor()->ActorHasTag("Player"))
 			{
 				UGameplayStatics::ApplyDamage(Hit.GetActor(), Damage, GetController(), this, nullptr);
+				if (ImpactEffect) 
+				{
+					UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+						GetWorld(),
+						ImpactEffect,
+						Hit.Location, 
+						Hit.ImpactNormal.Rotation() 
+					);
+				}
 			}
 		}
 	}

@@ -57,10 +57,15 @@ private:
 	UFUNCTION()
 	void HandleLevelEnd(float Time);
 
+	UFUNCTION()
+	void HandleLastLevel();
+
 	void ShowWidget(TObjectPtr<UUserWidget>& Instance, TSubclassOf<UUserWidget> Class);
 
 	UFUNCTION()
 	void RequestPause();
 
 	float LevelTime = 0.f;
+
+	bool bLastLevel = false;
 };

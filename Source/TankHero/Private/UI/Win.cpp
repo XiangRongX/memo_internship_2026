@@ -58,3 +58,11 @@ void UWin::SetTimeText(float Time)
 		TextBlock_Time->SetText(FText::FromString(TimeString));
 	}
 }
+
+void UWin::SetNextButtonEnabled(bool bEnabled)
+{
+	if (Button_Next)
+	{
+		Button_Next->SetIsEnabled(bEnabled);
+	}
+}

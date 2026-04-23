@@ -12,6 +12,7 @@ class ATankEnmey;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStateChanged, EGamePlayState, NewState);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLevelEnd, float, LevelTime);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLastLevel);
 
 /**
  * 
@@ -28,6 +29,7 @@ public:
 
     FOnStateChanged OnStateChanged;
 	FOnLevelEnd OnLevelEnd;
+    FOnLastLevel OnLastLevel;
 
 protected:
     virtual void BeginPlay() override;

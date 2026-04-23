@@ -177,44 +177,99 @@ void ATankPlayer::FireLaser()
 	FRotator Rotation = Mesh->GetSocketRotation(TEXT("Muzzle"));
 	Rotation.Pitch = 0.f;
 	Rotation.Roll = 0.f;
-	FVector Direction = Rotation.Vector();
-	FVector End = Start + (Direction * 5000.f);
-	FVector ActualEnd = End;
 
-	TArray<FHitResult> OutHits;
+	FVector Direction = Rotation.Vector();
+	FVector CurrentStart = Start;
+
+	float LaserRadius = 15.f;
+	int32 MaxBounces = BounceToIncrease;
+
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
+	FCollisionShape LaserSphere = FCollisionShape::MakeSphere(LaserRadius);
 
-	bool bHit = GetWorld()->LineTraceMultiByChannel(OutHits, Start, End, ECC_Laser, Params);
-	if (bHit)
+	for (int32 i = 0; i <= MaxBounces; ++i)
 	{
-		for (const FHitResult& Hit : OutHits)
-		{
-			if (Hit.GetActor()->IsRootComponentStatic() || Hit.GetActor()->ActorHasTag("Wall"))
-			{
-				ActualEnd = Hit.ImpactPoint;
+		FVector CurrentEnd = CurrentStart + (Direction * 5000.f);
 
-				if (ATriggerWall* TriggerWall = Cast<ATriggerWall>(Hit.GetActor()))
+		TArray<FHitResult> OutHits;
+		bool bHit = GetWorld()->SweepMultiByChannel(
+			OutHits,
+			CurrentStart,
+			CurrentEnd,
+			FQuat::Identity,
+			ECC_Laser,
+			LaserSphere,
+			Params
+		);
+
+		FVector ActualHitPoint = CurrentEnd;
+		FVector HitNormal = FVector::ZeroVector;
+		bool bBlockedByWall = false;
+
+		if (bHit)
+		{
+			for (const FHitResult& Hit : OutHits)
+			{
+				AActor* HitActor = Hit.GetActor();
+				if (!HitActor) continue;
+
+				if (HitActor->ActorHasTag("Enemy"))
 				{
-					TriggerWall->TriggerLowering();
+					UGameplayStatics::ApplyDamage(HitActor, Damage, GetController(), this, nullptr);
+					if (ImpactEffect)
+					{
+						UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+							GetWorld(),
+							ImpactEffect,
+							Hit.Location,       
+							Hit.ImpactNormal.Rotation()
+						);
+					}
+					continue;
 				}
 
-				break;
-			}
-			if (Hit.GetActor() && Hit.GetActor()->ActorHasTag("Enemy"))
-			{
-				UGameplayStatics::ApplyDamage(Hit.GetActor(), Damage, GetController(), this, nullptr);
-			}
-		}
-	}
+				if (HitActor->ActorHasTag("Wall")/* || HitActor->IsRootComponentStatic()*/)
+				{
+					ActualHitPoint = Hit.ImpactPoint;
+					HitNormal = Hit.ImpactNormal;
 
-	if (LaserEffect)
-	{
-		UNiagaraComponent* LaserComp = UNiagaraFunctionLibrary::SpawnSystemAttached(LaserEffect, Mesh, FName("Muzzle"), FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget, true);
-		if (LaserComp)
-		{
-			LaserComp->SetVariableVec3(TEXT("Beam End"), ActualEnd);
+					if (ATriggerWall* TriggerWall = Cast<ATriggerWall>(HitActor))
+					{
+						TriggerWall->TriggerLowering();
+					}
+
+					bBlockedByWall = true;
+					break;
+				}
+			}
 		}
+
+		if (LaserEffect)
+		{
+			UNiagaraComponent* LaserComp = UNiagaraFunctionLibrary::SpawnSystemAtLocation(
+				GetWorld(),
+				LaserEffect,
+				CurrentStart,
+				Direction.Rotation()
+			);
+
+			if (LaserComp)
+			{
+				LaserComp->SetVariableVec3(TEXT("Beam End"), ActualHitPoint);
+			}
+		}
+
+		if (!bBlockedByWall || i == MaxBounces)
+		{
+			break;
+		}
+
+		Direction = Direction.MirrorByVector(HitNormal);
+		Direction.Z = 0.f;
+		Direction.Normalize();
+		CurrentStart = ActualHitPoint + (HitNormal * (LaserRadius + 0.5f));
+		CurrentStart.Z = Start.Z;
 	}
 
 	if (LaserSound)

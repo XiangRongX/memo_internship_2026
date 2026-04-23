@@ -61,7 +61,7 @@ protected:
 	TObjectPtr<USoundBase> WinMusic;
 
 	UPROPERTY(EditAnywhere, Category = "TH|Audio")
-	TObjectPtr<USoundBase> LoseMusic;
+	TObjectPtr<USoundBase> LoseMusic; 
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAudioComponent> BGMComponent;

@@ -15,7 +15,7 @@ ATankBase::ATankBase()
 	RootComponent = Capsule;
 	Capsule->SetCanEverAffectNavigation(false);
 	Capsule->CanCharacterStepUpOn = ECB_No;
-	Capsule->SetCollisionResponseToChannel(ECC_Laser, ECR_Block);
+	Capsule->SetCollisionResponseToChannel(ECC_Laser, ECR_Overlap);
 
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);

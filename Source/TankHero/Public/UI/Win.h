@@ -19,6 +19,7 @@ class TANKHERO_API UWin : public UUserWidget
 	
 public:
 	void SetTimeText(float Time);
+	void SetNextButtonEnabled(bool bEnabled);
 
 protected:
 	virtual void NativeOnInitialized() override;

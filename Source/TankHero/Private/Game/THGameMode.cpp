@@ -93,6 +93,12 @@ void ATHGameMode::HandleNewState(EGamePlayState NewState)
             if (UTHGameInstance* THGameInstance = Cast<UTHGameInstance>(GetGameInstance()))
             {
                 int32 CurrentLevel = THGameInstance->GetCurrentLevel();
+                if (CurrentLevel == 15)
+                {
+                    OnLastLevel.Broadcast();
+                    THGameInstance->SwitchMusicState(EMusicState::Win);
+                    return;
+                }
                 THGameInstance->SetMaxLevel(CurrentLevel + 1);
                 THGameInstance->SwitchMusicState(EMusicState::Win);
             }
@@ -137,12 +143,15 @@ void ATHGameMode::SetTanksActive(bool bIsActive)
         if (bIsActive)
         {
             FInputModeGameAndUI InputMode;
+            InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways);
+            InputMode.SetHideCursorDuringCapture(false);
             PlayerController->SetInputMode(InputMode);
             PlayerController->SetCanRotate(true);
         }
         else
         {
             FInputModeUIOnly InputMode;
+            InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
             PlayerController->SetInputMode(InputMode);
             PlayerController->SetCanRotate(false);
         }

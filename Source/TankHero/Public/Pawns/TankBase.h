@@ -79,6 +79,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "TH|Effects")
 	TObjectPtr<UNiagaraSystem> DeathEffect;
 
+	UPROPERTY(EditDefaultsOnly, Category = "TH|Effects")
+	TObjectPtr<UNiagaraSystem> ImpactEffect;
+
 private:
 	
 
