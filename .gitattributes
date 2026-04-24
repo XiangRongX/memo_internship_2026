@@ -11,3 +11,5 @@
 
 # RawContent 目录下的所有文件
 /RawContent/**/* filter=lfs diff=lfs merge=lfs -text
+
+*.zip filter=lfs diff=lfs merge=lfs -text
